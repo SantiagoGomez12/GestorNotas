@@ -1,0 +1,111 @@
+﻿@model List<GestorNotas.Models.Nota>
+
+<style>
+            .contenedor {
+                width: 600px;
+                margin: 30px auto;
+                padding: 20px;
+            }
+
+            .campo {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 12px;
+                box-sizing: border-box;
+            }
+
+            .boton {
+                padding: 9px 15px;
+                cursor: pointer;
+            }
+
+            .nota {
+                border: 1px solid gray;
+                padding: 15px;
+                margin-top: 15px;
+            }
+
+            .error {
+                color: red;
+    }
+</style>
+
+<div class="contenedor">
+
+            <h1>Mi Gestor de Notas</h1>
+
+            <h3>Crear una nota</h3>
+
+            <form asp-controller="Notas" asp-action="Agregar" method="post">
+
+                        <p>Titulo:</p>
+
+                        <input type="text" name="titulo" class="campo"
+                               placeholder="Escribe el titulo..." />
+
+                        <p>Contenido:</p>
+
+                        <textarea name="contenido" class="campo"
+                                  rows="4"
+                                  placeholder="Escribe tu nota..."></textarea>
+
+                        <p>Categoria:</p>
+
+                        <input type="text" name="categoria" class="campo"
+                               placeholder="Ejemplo: Universidad, Personal..." />
+
+                        <button type="submit" class="boton">Guardar nota</button>
+
+    </form>
+
+    @if (ViewBag.Error != null)
+    {
+        <p class="error">@ViewBag.Error</p>
+    }
+
+    <hr />
+
+    <h3>Mis notas</h3>
+
+            <form asp-controller="Notas" asp-action="Index" method="get">
+
+                    <input type="text" name="busqueda"
+                           value="@ViewBag.Busqueda"
+                           class="campo"
+                           placeholder="Buscar notas..." />
+
+                    <button type="submit" class="boton">Buscar</button>
+
+                    <a asp-controller="Notas" asp-action="Index">Mostrar todas</a>
+
+          </form>
+
+    @if (Model.Count == 0)
+    {
+        <p>No hay notas registradas.</p>
+    }
+
+    @foreach (var nota in Model)
+    {
+                <div class="nota">
+
+                    <h3>@nota.Titulo</h3>
+
+                    <p>@nota.Descripcion</p>
+
+                    <p><strong>Categoria:</strong> @nota.Categoria</p>
+
+                    <form asp-controller="Notas"
+                          asp-action="Eliminar"
+                          method="post">
+
+                            <input type="hidden" name="id" value="@nota.Id" />
+
+                            <button type="submit" class="boton">Eliminar</button>
+    
+                     </form>
+
+              </div>
+    }
+
+</div>
